@@ -1,5 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
+import { set, get, del } from "idb-keyval";
+import { useRef } from "react"; // Add this import for useRef
 import styles from "./TodoList.module.css";
 
 type Task = {
@@ -24,29 +26,40 @@ const TodoList: React.FC = () => {
   const TASKS_STORAGE_KEY = "todoListTasks";
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskText, setTaskText] = useState<string>("");
+  const prevTasksRef = useRef<Task[]>([]);
 
   useEffect(() => {
-    const savedTasks = localStorage.getItem(TASKS_STORAGE_KEY);
-    if (savedTasks) {
-      console.log("Loaded tasks from localStorage:", JSON.parse(savedTasks));
-      setTasks(JSON.parse(savedTasks));
-    } else {
-      console.log("No tasks found in localStorage.");
-    }
+    // Load tasks from IndexedDB
+    get(TASKS_STORAGE_KEY).then((savedTasks: Task[] | undefined) => {
+      if (savedTasks) {
+        console.log("Loaded tasks from IndexedDB:", savedTasks);
+        setTasks(savedTasks);
+      } else {
+        console.log("No tasks found in IndexedDB.");
+      }
+    });
   }, []);
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      localStorage.setItem(TASKS_STORAGE_KEY, JSON.stringify(tasks));
-      console.log("Saved tasks to localStorage:", tasks);
-    }, 100); // delay of 1 second
-
-    return () => clearTimeout(timeoutId); // cleanup on unmount or if tasks change before the timeout
+    // Update the ref to the current tasks
+    prevTasksRef.current = tasks;
   }, [tasks]);
 
   const capitalizeFirstLetter = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
+
+  useEffect(() => {
+    if (
+      tasks.length > 0 ||
+      (tasks.length === 0 && prevTasksRef.current.length > 0)
+    ) {
+      // Save tasks to IndexedDB
+      set(TASKS_STORAGE_KEY, tasks).then(() => {
+        console.log("Saved tasks to IndexedDB:", tasks);
+      });
+    }
+  }, [tasks]);
 
   const addTask = () => {
     if (taskText.trim()) {
