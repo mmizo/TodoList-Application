@@ -1,0 +1,144 @@
+.container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #2f3136;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    font-size: 1rem; /* Increase text size */
+  }
+  
+  .input {
+    width: 70%;
+    margin-right: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: none;
+    background-color: #40444b;
+    color: #dcddde;
+    font-size: 1rem;
+  }
+  
+  .button {
+    background-color: #7289da;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s ease; /* Smooth transition */
+    width: calc(30% - 1rem); /* Take up the remaining space minus the margin */
+    font-size: 1rem; /* Match the text size */
+    padding: 0.5rem 0; /* Increase vertical padding */
+  }
+  
+  .button:hover {
+    background-color: #5a6eb2; /* Slightly darker blue on hover */
+  }
+  
+  .task {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align to the start */
+    padding: 0.5rem;
+    border-bottom: 1px solid #4a4d52;
+    background-color: #36393f;
+    color: #dcddde;
+  }
+  
+  .task input[type="checkbox"] {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 1rem; /* Space between checkbox and text */
+  }
+  
+  .deleteButton {
+    padding: 0.5rem 1rem;
+    background-color: transparent; /* Make it transparent by default */
+    border: none;
+    border-radius: 4px;
+    color: #8e9297; /* Muted color by default */
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  
+  .deleteButton:hover {
+    background-color: #f04747;
+    color: #ffffff;
+  }
+  
+  
+  .completedTask {
+    color: #8e9297;
+    text-decoration: line-through;
+  }
+  
+  /* Remove default padding from the ul */
+.taskList {
+    padding-left: 0;
+    list-style-type: none; /* Remove bullet points */
+}
+
+.inputContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem; /* Add some space between this container and the tasks list */
+  }
+
+  .taskContent {
+    display: flex;
+    align-items: center;
+    flex-grow: 1; /* This will make sure it takes up all available space */
+  }
+  
+@media (max-width: 768px) { /* Adjust the breakpoint as needed */
+    .container {
+        padding: 0.5rem;
+    }
+
+    .input, .button {
+        width: 100%; /* Make input and button take full width on mobile */
+        margin-bottom: 0.5rem; /* Add some space between them */
+    }
+
+    .button {
+        width: auto; /* Let the button size itself based on content */
+    }
+}
+
+@media (max-width: 768px) { /* Adjust the breakpoint as needed */
+    .container {
+        padding: 0.5rem;
+    }
+
+    .input, .button {
+        width: 100%; /* Make input and button take full width on mobile */
+        margin-bottom: 0.5rem; /* Add some space between them */
+    }
+
+    .button {
+        width: auto; /* Let the button size itself based on content */
+    }
+}
+
+
+@media (max-width: 768px) {
+    .button, .input {
+        padding: 1rem; /* Increase padding */
+    }
+}
+
+
+@media (max-width: 768px) {
+    .task input[type="checkbox"], .deleteButton {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        margin: 1rem; /* Adjust as needed */
+        border-radius: 4px;
+    }
+}
