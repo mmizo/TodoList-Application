@@ -27,6 +27,8 @@ const TodoList: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskText, setTaskText] = useState<string>("");
   const prevTasksRef = useRef<Task[]>([]);
+  const [editingTaskId, setEditingTaskId] = useState<number | null>(null);
+  const [editingText, setEditingText] = useState<string>("");
 
   useEffect(() => {
     const savedTasks = JSON.parse(
@@ -57,6 +59,27 @@ const TodoList: React.FC = () => {
 
   const capitalizeFirstLetter = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  const startEditing = (taskId: number, text: string) => {
+    setEditingTaskId(taskId);
+    setEditingText(text);
+  };
+
+  const saveEdit = (taskId: number) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, text: editingText } : task
+      )
+    );
+    setEditingTaskId(null);
+    setEditingText("");
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      saveEdit(editingTaskId!);
+    }
   };
 
   const addTask = () => {
@@ -110,9 +133,23 @@ const TodoList: React.FC = () => {
                 checked={task.completed}
                 onChange={() => toggleCompletion(task.id)}
               />
-              <span className={task.completed ? styles.completedTask : ""}>
-                {task.text}
-              </span>
+              {editingTaskId === task.id ? (
+                <input
+                  value={editingText}
+                  onChange={(e) => setEditingText(e.target.value)}
+                  onBlur={() => saveEdit(task.id)}
+                  onKeyPress={handleKeyPress}
+                  autoFocus
+                  className={styles.input}
+                />
+              ) : (
+                <span
+                  className={task.completed ? styles.completedTask : ""}
+                  onClick={() => startEditing(task.id, task.text)}
+                >
+                  {task.text}
+                </span>
+              )}
             </div>
             <button
               onClick={() => removeTask(task.id)}
